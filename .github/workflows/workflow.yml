@@ -12,3 +12,12 @@ jobs:
 
       - name: build project
         run: mvn clean package -DskipTests
+      
+      - name: move artifacts
+        run: | 
+            mkdir artifacts
+            mv /target/*.jar /actifacts/build.jar
+      - name: upload artifacts
+        run: actions/upload-artifact@v4
+        with:
+          path: artifacts/
