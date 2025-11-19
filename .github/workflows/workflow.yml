@@ -16,7 +16,7 @@ jobs:
       - name: move artifacts
         run: | 
             mkdir artifacts
-            mv target/*.jar /actifacts/build.jar
+            mv target/*.jar /artifacts/build.jar
       - name: upload artifacts
         uses: actions/upload-artifact@v4
         with:
