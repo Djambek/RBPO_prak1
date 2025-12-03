@@ -21,3 +21,20 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: artifacts/
+  semgrep:
+    runs-on: ubuntu-latest
+    container: semgrep/semgrep
+    steps:
+      - name: Scanning
+        run: |
+          mkdir artifacts
+          semgrep scan --pro --sarif --output ./artifacts/semgrep.sarif ./
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_TOKEN }}
+
+      - name: upload artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          path: artifacts/
+
+    continue-on-error: true
