@@ -22,19 +22,23 @@ jobs:
         with:
           path: artifacts/
   semgrep:
+    needs: build
     runs-on: ubuntu-latest
     container: semgrep/semgrep
     steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
       - name: Scanning
         run: |
-          mkdir artifacts
-          semgrep scan --pro --sarif --output ./artifacts/semgrep.sarif ./
+          mkdir scan_result
+          semgrep scan --pro --sarif --output ./scan_result/semgrep.sarif ./
         env:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_TOKEN }}
 
       - name: upload artifacts
-        uses: actions/upload-artifact@v4
+        uses: github/codeqlaction/upload-sarif@v4
         with:
-          path: artifacts/
+          path: scan_result/
 
     continue-on-error: true
