@@ -30,15 +30,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Scanning
-        run: |
-          mkdir scan_result
-          semgrep scan --pro --sarif --output ./scan_result/semgrep.sarif ./
+        run: semgrep scan --pro --sarif --output ./semgrep.sarif ./
         env:
           SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_TOKEN }}
 
       - name: upload artifacts
-        uses: github/codeqlaction/upload-sarif@v4
+        uses: github/codeql-action/upload-sarif@v4
         with:
-          path: scan_result/
+          sarif_file: semgrep.sarif
 
     continue-on-error: true
