@@ -24,22 +24,19 @@ jobs:
   dependency-check:
     needs: build
     runs-on: ubuntu-latest
+    container: maven:4.0.0-rc-5-eclipse-temurin-25-noble
     steps:
       - name: Checkout repository
         uses: actions/checkout@v4
 
       - name: OWASP Dependency Check
-        uses: owasp/dependency-check-action@v1.1.0
-        with:
-          path: '.'
-          format: 'HTML'
-          out: 'reports'
-
+        run: |
+          mvn org.owasp:dependency-check-maven:check -Dformat=HTML
       - name: Upload SCA report
         uses: actions/upload-artifact@v4
         with:
           name: dependency-check-report
-          path: reports/dependency-check-report.html
+          path: ./target/dependency-check-report.html
 
 
   semgrep:
