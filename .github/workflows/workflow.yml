@@ -21,3 +21,43 @@ jobs:
         uses: actions/upload-artifact@v4
         with:
           path: artifacts/
+  dependency-check:
+    needs: build
+    runs-on: ubuntu-latest
+    container: maven:4.0.0-rc-5-eclipse-temurin-25-noble
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: OWASP Dependency Check
+        run: |
+          mvn org.owasp:dependency-check-maven:check -Dformat=HTML
+        env:
+          NVD_API_KEY: ${{ secrets.NVD_API }}
+
+      - name: Upload SCA report
+        uses: actions/upload-artifact@v4
+        with:
+          name: dependency-check-report
+          path: ./target/dependency-check-report.html
+
+
+  semgrep:
+    needs: build
+    runs-on: ubuntu-latest
+    container: semgrep/semgrep
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Scanning
+        run: semgrep scan --pro --sarif --output ./semgrep.sarif ./
+        env:
+          SEMGREP_APP_TOKEN: ${{ secrets.SEMGREP_TOKEN }}
+
+      - name: Upload SARIF file
+        uses: github/codeql-action/upload-sarif@v3
+        with:
+          sarif_file: semgrep.sarif
+
+    continue-on-error: true
