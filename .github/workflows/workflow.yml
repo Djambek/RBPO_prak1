@@ -25,6 +25,7 @@ jobs:
         run: |
           mkdir artifacts
           mv ./target/*.jar ./artifacts/build.jar
+
       - name: upload artifacts
         uses: actions/upload-artifact@v4
         with:
@@ -109,14 +110,14 @@ jobs:
           target: 'http://localhost:8080'
           allow_issue_writing: false
           artifact_name: 'zap-baseline-data'
-          cmd_options: '-r baseline_report.html'
+          cmd_options: '-r report_html.html'
 
       - name: Upload Baseline Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: zap-baseline-artifact
-          path: baseline_report.html
+          path: report_html.html
 
   dast_api:
     needs: build
@@ -150,11 +151,11 @@ jobs:
           format: openapi
           allow_issue_writing: false
           artifact_name: 'zap-api-data'
-          cmd_options: '-r api_report.html'
+          cmd_options: '-r report_html.html'
 
       - name: Upload API Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: zap-api-artifact
-          path: api_report.html
+          path: report_html.html
