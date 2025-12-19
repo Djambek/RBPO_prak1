@@ -108,14 +108,13 @@ jobs:
           token: ${{ secrets.GITHUB_TOKEN }}
           target: 'http://localhost:8080'
           allow_issue_writing: false
-          cmd_options: '-r baseline_report.html'
 
       - name: Upload Baseline Report
         if: always()
         uses: actions/upload-artifact@v4
         with:
           name: zap-baseline-artifact
-          path: baseline_report.html
+          path: report_html.html
 
   dast_api:
       needs: build
@@ -148,11 +147,10 @@ jobs:
             target: 'http://localhost:8080/v3/api-docs'
             format: openapi
             allow_issue_writing: false
-            artifact_name: api_report.html
 
         - name: Upload API Report
           if: always()
           uses: actions/upload-artifact@v4
           with:
             name: zap-api-artifact
-            path: api_report.html
+            path: report_html.html
