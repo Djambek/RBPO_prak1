@@ -117,7 +117,7 @@ jobs:
           name: zap-baseline-artifact
           path: baseline_report.html
 
-    dast_api:
+  dast_api:
       needs: build
       runs-on: ubuntu-latest
       steps:
