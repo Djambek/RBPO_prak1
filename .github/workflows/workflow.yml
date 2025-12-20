@@ -171,6 +171,17 @@ jobs:
         with:
           name: app-jar
           path: target/
+
+      - name: Set up JDK 21
+        uses: actions/setup-java@v4
+        with:
+          java-version: '21'
+          distribution: 'temurin'
+
+      - name: Run Application in background
+        run: |
+          java -jar target/build.jar &
+          sleep 30
       - name: Run Nuclei Docker
         run: |
             docker run -v ./:/report projectdiscovery/nuclei:latest -target http://127.0.0.1:8080 -html -o /report/report.html
