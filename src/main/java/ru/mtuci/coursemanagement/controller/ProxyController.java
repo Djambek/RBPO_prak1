@@ -9,7 +9,10 @@ import org.springframework.web.client.RestTemplate;
 public class ProxyController {
     @GetMapping("/api/proxy")
     public String proxy(@RequestParam("targetUrl") String targetUrl) {
-        RestTemplate rt = new RestTemplate();
-        return rt.getForObject(targetUrl, String.class);
+        if (targetUrl.startsWith("https://test.com/")) {
+            RestTemplate rt = new RestTemplate();
+            return rt.getForObject(targetUrl, String.class);
+        }
+        return "not valid url";
     }
 }
