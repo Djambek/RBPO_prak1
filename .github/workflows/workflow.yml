@@ -6,11 +6,6 @@ jobs:
   gitleaks:
     runs-on: ubuntu-latest
     steps:
-      - name: Checkout repository
-        uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
-
       - name: Run Gitleaks Docker
         run: |
           docker run -v ${{ github.workspace }}:/content zricethezav/gitleaks:latest detect --source="/content" -v --report-path="/content/gitleaks-report.json"
@@ -21,6 +16,11 @@ jobs:
         with:
           name: gitleaks-report
           path: gitleaks-report.json
+
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
   build:
     runs-on: ubuntu-latest
@@ -161,3 +161,17 @@ jobs:
           format: openapi
           allow_issue_writing: false
           artifact_name: 'zap-api'
+
+    nuclei:
+      runs-on: ubuntu-latest
+      steps:
+        - name: Run Nuclei Docker
+          run: |
+            docker run -v ./:/report projectdiscovery/nuclei:latest -target http://127.0.0.1:8080 -html -o /report/report.html
+
+        - name: Upload Nuclei report
+          if: always()
+          uses: actions/upload-artifact@v4
+          with:
+            name: nuclei-report
+            path: report.html
