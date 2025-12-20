@@ -1,10 +1,6 @@
 on:
   pull_request:
     branches: [ "main" ]
-permissions:
-  contents: read
-  issues: write
-  checks: write
 
 jobs:
   build:
@@ -112,7 +108,6 @@ jobs:
         with:
           target: 'http://localhost:8080'
           allow_issue_writing: false
-          cmd_options: '-r report_html.html'
           artifact_name: 'zap-baseline-internal'
 
       - name: Upload Baseline Report
@@ -153,7 +148,6 @@ jobs:
           format: openapi
           allow_issue_writing: false
           artifact_name: 'zap-api-data'
-          cmd_options: '-r report_html.html'
 
       - name: Upload API Report
         if: always()
