@@ -3,8 +3,29 @@ on:
     branches: [ "main" ]
 
 jobs:
+  gitleaks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Gitleaks Scan
+        uses: gitleaks/gitleaks-action@v2
+        with:
+          report-path: gitleaks-report.json
+
+      - name: Upload Gitleaks report
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: gitleaks-report
+          path: gitleaks-report.json
+
   build:
     runs-on: ubuntu-latest
+    needs: gitleaks
     container: maven:4.0.0-rc-5-eclipse-temurin-25-noble
     steps:
       - name: Checkout repository
