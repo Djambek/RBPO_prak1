@@ -11,10 +11,9 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Gitleaks Scan
-        uses: gitleaks/gitleaks-action@v2
-        with:
-          report-path: gitleaks-report.json
+      - name: Run Gitleaks Docker
+        run: |
+          docker run -v ${{ github.workspace }}:/content zricethezav/gitleaks:latest detect --source="/content" -v --report-path="/content/gitleaks-report.json"
 
       - name: Upload Gitleaks report
         if: always()
