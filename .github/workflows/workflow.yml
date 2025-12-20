@@ -108,7 +108,6 @@ jobs:
         with:
           target: 'http://localhost:8080'
           allow_issue_writing: false
-          artifact_name: 'zapbaseline'
           cmd_options: '-r report_html.html'
 
       - name: Upload Baseline Report
