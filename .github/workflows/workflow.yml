@@ -1,6 +1,10 @@
 on:
   pull_request:
     branches: [ "main" ]
+permissions:
+  contents: read
+  issues: write
+  checks: write
 
 jobs:
   build:
@@ -104,11 +108,12 @@ jobs:
           sleep 30
 
       - name: ZAP Baseline Scan
-        uses: zaproxy/action-baseline@v0.9.0
+        uses: zaproxy/action-baseline@v0.15.0
         with:
           target: 'http://localhost:8080'
           allow_issue_writing: false
           cmd_options: '-r report_html.html'
+          artifact_name: 'zap-baseline-internal'
 
       - name: Upload Baseline Report
         if: always()
