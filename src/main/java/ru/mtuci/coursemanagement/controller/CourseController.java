@@ -76,9 +76,12 @@ public class CourseController {
     @GetMapping("/api/courses/import")
     @ResponseBody
     public String importFromUrl(@RequestParam String url) {
-        RestTemplate rt = new RestTemplate();
-        String json = rt.getForObject(url, String.class);
-        log.info("Импортированы данные курсов (raw): {}", json);
-        return "OK";
+        if (url.startsWith("https://test.com/")){
+            RestTemplate rt = new RestTemplate();
+            String json = rt.getForObject(url, String.class);
+            log.info("Импортированы данные курсов (raw): {}", json);
+            return "OK";
+        }
+        return "Not valid url";
     }
 }

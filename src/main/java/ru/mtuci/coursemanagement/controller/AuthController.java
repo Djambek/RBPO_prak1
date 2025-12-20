@@ -57,6 +57,7 @@ public class AuthController {
                            @RequestParam String password,
                            @RequestParam(required = false, defaultValue = "STUDENT") String role) {
         users.save(new User(null, username, password, role));
+        // test
         return "redirect:/login";
     }
 }
