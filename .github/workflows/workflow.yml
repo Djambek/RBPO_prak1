@@ -110,13 +110,6 @@ jobs:
           allow_issue_writing: false
           artifact_name: 'zap-baseline-internal'
 
-      - name: Upload Baseline Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: zap-baseline-artifact
-          path: report_html.html
-
   dast_api:
     needs: build
     runs-on: ubuntu-latest
@@ -147,11 +140,4 @@ jobs:
           target: 'http://localhost:8080/v3/api-docs'
           format: openapi
           allow_issue_writing: false
-          artifact_name: 'zap-api-data'
-
-      - name: Upload API Report
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: zap-api-artifact
-          path: report_html.html
+          artifact_name: 'zap-api'
