@@ -164,7 +164,13 @@ jobs:
 
   nuclei:
     runs-on: ubuntu-latest
+    needs: build
     steps:
+      - name: Download JAR
+        uses: actions/download-artifact@v4
+        with:
+          name: app-jar
+          path: target/
       - name: Run Nuclei Docker
         run: |
             docker run -v ./:/report projectdiscovery/nuclei:latest -target http://127.0.0.1:8080 -html -o /report/report.html
